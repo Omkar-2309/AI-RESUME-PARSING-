@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Resume Screening & Matcher</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Roboto&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --neon-pink: #ff007c;
+      --neon-blue: #00ffe7;
+      --neon-purple: #b266ff;
+      --neon-green: #39ff14;
+      --glass-bg: rgba(255, 255, 255, 0.05);
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(130deg, #0f0c29, #302b63, #24243e);
+      color: #fff;
+      animation: fadeIn 1.5s ease-in;
+      overflow-x: hidden;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 40px;
+      background: var(--glass-bg);
+      border: 1px solid var(--neon-blue);
+      border-radius: 20px;
+      box-shadow: 0 0 20px var(--neon-blue);
+      backdrop-filter: blur(15px);
+      transition: transform 0.4s ease-in-out, box-shadow 0.4s;
+    }
+
+    .container:hover {
+      transform: scale(1.015);
+      box-shadow: 0 0 30px var(--neon-green);
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: 'Orbitron', sans-serif;
+      text-align: center;
+      color: var(--neon-green);
+      text-shadow: 0 0 12px var(--neon-green);
+    }
+
+    p {
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    textarea,
+    input[type="file"] {
+      width: 90%;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      box-shadow: 0 0 15px var(--neon-blue);
+      background-color: #1e1e2f;
+      color: var(--neon-blue);
+      resize: none;
+    }
+
+    input[type="submit"] {
+      padding: 14px 28px;
+      background: linear-gradient(135deg, var(--neon-pink), var(--neon-blue));
+      color: #fff;
+      font-weight: bold;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s;
+      box-shadow: 0 0 15px var(--neon-pink);
+    }
+
+    input[type="submit"]:hover {
+      transform: scale(1.06);
+      box-shadow: 0 0 25px var(--neon-pink), 0 0 15px var(--neon-blue);
+    }
+
+    .highlight {
+      color: var(--neon-pink);
+      text-shadow: 0 0 8px var(--neon-pink);
+    }
+
+    hr {
+      border: 0;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--neon-purple), transparent);
+      margin: 30px auto;
+    }
+
+    .resume-result {
+      background-color: #111827;
+      padding: 20px;
+      margin-top: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px var(--neon-purple);
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+      text-align: center;
+    }
+
+    li {
+      margin: 6px 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>🤖 AI Resume Screening & Matcher</h1>
+    <p>This system supports <span class="highlight">multiple resume uploads</span> in <span class="highlight">PDF, TXT</span> formats.<br />
+      It'll analyze each resume and match it to your job description.</p>
+    <form action="/analyze" method="POST" enctype="multipart/form-data">
+      <label for="job_description" style="font-weight:bold;">Paste Job Description Here:</label>
+      <textarea name="job_description" id="job_description" rows="6" required></textarea>
+
+      <label for="resumes" style="font-weight:bold;">Upload Resumes (Multiple Allowed):</label>
+      <input type="file" name="resumes" id="resumes" multiple accept=".pdf,.txt" required />
+
+      <input type="submit" value="🚀 Analyze Resumes" />
+    </form>
+  </div>
+
+  {% if results %}
+  <div class="container">
+    <h2>🧠 Analysis Results</h2>
+    {% for res in results %}
+    <div class="resume-result">
+      <h3>📄 {{ res.filename }}</h3>
+      <p><strong>Name:</strong> {{ res.name }}</p>
+      <p><strong>Email:</strong> {{ res.email }}</p>
+      <p><strong>Phone:</strong> {{ res.phone }}</p>
+
+      {% if res.skills %}
+      <h4>🛠 Skills</h4>
+      <ul>
+        {% for skill in res.skills %}
+        <li>{{ skill }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+      {% if res.education %}
+      <h4>🎓 Education</h4>
+      <ul>
+        {% for edu in res.education %}
+        <li>{{ edu }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+      <p><strong>🔖 Category:</strong> {{ res.category }}</p>
+      <p><strong>🎯 Recommended Job:</strong> {{ res.recommended_job }}</p>
+      <p><strong>📊 Match Score:</strong> {{ res.match_score }}%</p>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+</body>
+
+</html>
