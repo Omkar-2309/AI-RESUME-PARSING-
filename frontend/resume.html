@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Resume Scanner</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Roboto&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --neon-pink: #ff007c;
+      --neon-blue: #00ffe7;
+      --neon-purple: #b266ff;
+      --neon-green: #39ff14;
+      --glass-bg: rgba(255, 255, 255, 0.05);
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(130deg, #0f0c29, #302b63, #24243e);
+      color: #fff;
+      animation: fadeIn 1.5s ease-in;
+      overflow-x: hidden;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 40px;
+      background: var(--glass-bg);
+      border: 1px solid var(--neon-blue);
+      border-radius: 20px;
+      box-shadow: 0 0 20px var(--neon-blue);
+      backdrop-filter: blur(15px);
+      transition: transform 0.4s ease-in-out, box-shadow 0.4s;
+    }
+
+    .container:hover {
+      transform: scale(1.015);
+      box-shadow: 0 0 30px var(--neon-green);
+    }
+
+    h1,
+    h2 {
+      font-family: 'Orbitron', sans-serif;
+      text-align: center;
+      color: var(--neon-green);
+      text-shadow: 0 0 12px var(--neon-green);
+    }
+
+    h3 {
+      color: var(--neon-purple);
+      font-family: 'Orbitron', sans-serif;
+      text-align: center;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 30px;
+    }
+
+    input[type="file"] {
+      margin-bottom: 25px;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      box-shadow: 0 0 15px var(--neon-blue);
+      background-color: #1e1e2f;
+      color: #00ffe7;
+      width: 85%;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s;
+    }
+
+    input[type="file"]:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 20px var(--neon-purple);
+    }
+
+    input[type="submit"] {
+      padding: 14px 28px;
+      background: linear-gradient(135deg, var(--neon-pink), var(--neon-blue));
+      color: #fff;
+      font-weight: bold;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s;
+      box-shadow: 0 0 15px var(--neon-pink);
+    }
+
+    input[type="submit"]:hover {
+      transform: scale(1.06);
+      box-shadow: 0 0 25px var(--neon-pink), 0 0 15px var(--neon-blue);
+    }
+
+    p,
+    ul {
+      text-align: center;
+      line-height: 1.7;
+    }
+
+    hr {
+      border: 0;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--neon-purple), transparent);
+      margin: 30px auto;
+    }
+
+    .info-section {
+      margin-top: 40px;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    .highlight {
+      color: var(--neon-pink);
+      text-shadow: 0 0 8px var(--neon-pink);
+    }
+
+    .category-box {
+      background-color: #111827;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px var(--neon-purple);
+      margin-bottom: 15px;
+    }
+
+    .glow {
+      text-shadow: 0 0 10px #00ffe7;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h1 class="glow">🤖 AI Resume Screening</h1>
+    <p>This futuristic system supports <span class="highlight">TXT</span> and <span class="highlight">PDF</span> formats.</p>
+    <ul>
+      <li>🔍 <strong>AI-Powered Resume Categorization</strong></li>
+      <li>💼 <strong>Smart Job Recommendations</strong></li>
+      <li>📄 <strong>Deep Resume Parsing</strong></li>
+    </ul>
+  </div>
+
+  <div class="container">
+    <h2>🚀 Upload Your Resume</h2>
+    <form action="/pred" method="post" enctype="multipart/form-data">
+      <input type="file" name="resume" accept=".pdf, .txt" required>
+      <input type="submit" value="Analyze Resume ⚡">
+    </form>
+
+    {% if message %}
+    <p class="highlight">{{message}}</p>
+    {% endif %}
+
+    {% if predicted_category %}
+    <div class="info-section">
+      <hr>
+      <div class="category-box">
+        <p><strong>🔖 Category:</strong> {{predicted_category}}</p>
+        <p><strong>🎯 Recommended Job:</strong> {{recommended_job}}</p>
+      </div>
+
+      <h2>🧠 Extracted Information</h2>
+      <p><strong>Name:</strong> {{name}}</p>
+      <p><strong>📞 Phone No:</strong> {{phone}}</p>
+      <p><strong>📧 Email:</strong> {{email}}</p>
+
+      {% if extracted_skills %}
+      <h3>🛠️ Skills</h3>
+      <ul>
+        {% for skill in extracted_skills %}
+        <li>{{ skill }}</li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>No skills found.</p>
+      {% endif %}
+
+      {% if extracted_education %}
+      <h3>🎓 Education</h3>
+      <ul>
+        {% for edu in extracted_education %}
+        <li>{{ edu }}</li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>No education details found.</p>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+
+</body>
+
+</html>
