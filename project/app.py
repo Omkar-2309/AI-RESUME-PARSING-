@@ -114,7 +114,7 @@ def analyze():
             "recommended_job": recommended_job,
             "match_score": match_score
         })
-
+    results.sort(key=lambda x: x['match_score'], reverse=True)
     return render_template("index.html", results=results)
 
 if __name__ == "__main__":
