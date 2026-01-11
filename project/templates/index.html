@@ -138,8 +138,13 @@
 <body>
   <div class="container">
     <h1>🤖 AI Resume Screening & Matcher</h1>
-    <p>This system supports <span class="highlight">multiple resume uploads</span> in <span class="highlight">PDF, TXT</span> formats.<br />
-      It'll analyze each resume and match it to your job description.</p>
+    <p>
+      Upload <span class="highlight">multiple resumes</span> in
+      <span class="highlight">PDF or TXT</span> format, paste a
+      <span class="highlight">Job Description</span>, and automatically
+      <span class="highlight">analyze, score, and rank candidates</span> based on their match relevance.
+    </p>
+
     <form action="/analyze" method="POST" enctype="multipart/form-data">
       <label for="job_description" style="font-weight:bold;">Paste Job Description Here:</label>
       <textarea name="job_description" id="job_description" rows="6" required></textarea>

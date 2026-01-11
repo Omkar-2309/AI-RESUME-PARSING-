@@ -22,3 +22,28 @@ Once running, open your browser and go to `http://127.0.0.1:5000`.
 - **Job Recommendation**: Recommends suitable job titles.
 - **Information Extraction**: Extracts Name, Email, Phone, Skills, and Education.
 - **Match Scoring**: Compare resumes against a job description.
+
+## Project Structure
+
+```
+.
+├── Resume Categorization prediction.ipynb  # Jupyter Notebook for model training/experimentation
+├── clean_resume_data.csv                   # Dataset used for training
+├── run_function.sh                         # Master script to run the project
+├── project/                                # Main Application Directory
+│   ├── app.py                              # Main Flask Application
+│   ├── requirements.txt                    # Python dependencies
+│   ├── app.log                             # Application Logs
+│   ├── templates/
+│   │   └── index.html                      # Frontend Template
+│   └── models/                             # Trained Models (PKL files)
+│       ├── rf_classifier_categorization.pkl
+│       ├── rf_classifier_job_recommendation.pkl
+│       ├── tfidf_vectorizer_categorization.pkl
+│       └── tfidf_vectorizer_job_recommendation.pkl
+├── models/                                 # Duplicate models (used by Notebook)
+└── test_resume_dataset/                    # Sample resumes for testing
+    ├── Data Scientist.pdf
+    ├── Software Engineer.pdf
+    └── ...
+```
