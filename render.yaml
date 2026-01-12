@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: ai-resume-screening
+    env: python
+    buildCommand: pip install -r project/requirements.txt
+    startCommand: gunicorn project.app:app
